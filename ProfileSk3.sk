@@ -1,0 +1,55 @@
+variables: #Dev: LamboCreeper - UUID Convert and Clean-up/Recode/GUI: tim740
+#Start 1 to 16 (options) don't support spaces!
+	{psk.op.1} = "Nickname"
+	{psk.op.2} =  "Gender"
+	{psk.op.3} =  "Age"
+	{psk.op.4} =  "Country"
+	{psk.op.5} =  "Computer"
+	{psk.op.6} =  "Interests"
+	{psk.op.7} =  "Colour"
+	{psk.op.8} =  "Animal"
+	{psk.op.9} =  "Sport"
+	{psk.op.10} =  "Brand"
+	{psk.op.11} =  "Car"
+	{psk.op.12} =  "Game"
+	{psk.op.13} =  "MusicArtist"
+	{psk.op.14} =  "MusicGenre"
+	{psk.op.15} =  "Food"
+	{psk.op.16} =  "Drink"
+#End
+
+command /profile [<text>] [<offlineplayer>] [<text>]:
+	trigger:
+		if arg 1 is not set:
+			send "&7[&9ProfileSk2&7]&a Help%nl% "
+			send json "&e/profile view <player> &aView a player's profile." suggest "/profile view" to player
+			send json "&e/profile set &aChoose something to set." run "/profile set" to player
+		else if arg 1 is "view":
+			if arg 2 is set:
+				loop 16 times:
+					if {profilesk2::%{uuid::%arg 2%}%::%{psk.op.%loop-num%}%} exists:
+						set {_p.%loop-num%} to "%{profilesk2::%{uuid::%arg 2%}%::%{psk.op.%loop-num%}%}%"
+					else:
+						set {_p.%loop-num%} to "&8Not Set!"
+				open chest with 2 rows named "&0Profile: &9%arg 2%" to player
+				wait 1 tick
+				loop 16 times:
+					format slot (loop-num -1) of player with paper named "&a%{psk.op.%loop-num%}%" with lore "&e%{_p.%loop-num%}%" to be unstealable
+				format slot 16 of player with light gray glass named " " to close
+				format slot 17 of player with light gray glass named " " to close
+		else if arg 1 is "set":
+			if arg 2 is not set:
+				send "&aProfile: &2Created by: &aLamboCreeper &2Recoded by: &atim740 &2(&aV:2.2.0&2)"
+				loop 16 times:
+					send json "&7/profile set %{psk.op.%loop-num%}% <%{psk.op.%loop-num%}%>" tooltip "&eClick for quick type." suggest "/profile set %{psk.op.%loop-num%}%" to player
+			else if arg 2 is "%{psk.op.2}%":
+				if arg 3 is "male" or "female":
+					set {profilesk2::%uuid of player%::gender} to arg 3
+					send "&aYour %{psk.op.1}% was set to ""%arg 3%"""
+				else:
+					send "&cYou can only pick from ""Male"" and ""Female"""
+			else if arg 2 is "%{psk.op.1}%" or "%{psk.op.3}%" or "%{psk.op.4}%" or "%{psk.op.5}%" or "%{psk.op.6}%" or "%{psk.op.7}%" or "%{psk.op.8}%" or "%{psk.op.9}%" or "%{psk.op.10}%" or "%{psk.op.11}%" or "%{psk.op.12}%" or "%{psk.op.13}%" or "%{psk.op.14}%" or "%{psk.op.15}%" or "%{psk.op.16}%":
+				set {profilesk2::%uuid of player%::%arg 2%} to arg 3
+				send "&aYour %arg 2% was set to ""%arg 3%"""
+			else:
+				send "&cUnknown set type!"
