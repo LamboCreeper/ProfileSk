@@ -1,0 +1,122 @@
+# ProfileSk v3.0.0
+# Created By LamboCreeper
+
+command /profilesk:profilesk [<text>] [<text>] [<text>] [<text>]:
+	aliases: /profilesk, /profilesk:profile, /profile
+	trigger:
+		if arg 1 is "set":
+			if player has permission "profilesk.set":
+				if arg 2 is "nickname":
+					if arg 3 is set:
+						if arg 4 is set:
+							send "§4Error:§c Your nickname can only be one word long."
+						else:
+							set {psk::data::%uuid of player%::nickname} to arg 3
+							send "§2Success:§a Your nickname was set to %{psk::data::%uuid of player%::nickname}%"
+					else:
+						send "§4Error:§c You must define a nickname."
+				else if arg 2 is "gender":
+					if arg 3 is set:
+						if arg 3 isn't "male", "female" or "other":
+							send "§4Error:§c Your gender must be either male, female or other."
+						else:
+							set {psk::data::%uuid of player%::gender} to arg 3
+							send "§2Success:§a Your gender was set to %{psk::data::%uuid of player%::gender}%"
+					else:
+						send "§4Error§c You must define a gender."
+				else if arg 2 is "age":
+					if arg 3 is set:
+						set {_arg3} to arg 3 parsed as integer
+						if parse error is set:
+							send "§4Error:§c Your age must be an integer."
+						else:
+							set {psk::data::%uuid of player%::age} to {_arg3}
+							send "§2Success:§a Your age was set to %{psk::data::%uuid of player%::age}%"
+					else:
+						send "§4Error:§c You must define an age."
+				else if arg 2 is "country":
+					if arg 3 is set:
+						if arg 4 is set:
+							send "§4Error:§c Your country can only be one word long."
+						else:
+							set {psk::data::%uuid of player%::country} to arg 3
+							send "§2Success:§a Your country was set to %{psk::data::%uuid of player%::country}%"
+					else:
+						send "§4Error:§c You must define a country."
+				else if arg 2 is "colour":
+					if arg 3 is set:
+						if arg 4 is set:
+							send "§4Error:§c Your favourite colour can only be one word long."
+						else:
+							set {psk::data::%uuid of player%::colour} to arg 3
+							send "§2Success:§a Your favourite colour was set to %{psk::data::%uuid of player%::colour}%"
+					else:
+						send "§4Error:§c You must define a favourite colour."
+				else if arg 2 is "animal":
+					if arg 3 is set:
+						if arg 4 is set:
+							send "§4Error:§c Your favourite animal can only be one word long."
+						else:
+							set {psk::data::%uuid of player%::animal} to arg 3
+							send "§2Success:§a Your favourite animal was set to %{psk::data::%uuid of player%::animal}%"
+					else:
+						send "§4Error:§c You must define a favourite animal."
+				else if arg 2 is "sport":
+					if arg 3 is set:
+						if arg 4 is set:
+							send "§4Error:§c Your favourite sport can only be one word long."
+						else:
+							set {psk::data::%uuid of player%::sport} to arg 3
+							send "§2Success:§a Your favourite sport was set to %{psk::data::%uuid of player%::sport}%"
+					else:
+						send "§4Error:§c You must define a favourite sport."
+				else:
+					send "§4Error:§c Unknown Type. Type §e/profile §cfor help."
+			else:
+				send "§4Error:§c You do not have permission to set your profile."
+		else if arg 1 is "view":
+			if player has permission "profilesk.view":
+				if arg 2 is set:
+					send "§8§n%arg 2%'s Profile:"
+					set {_p} to arg 2 parsed as player
+					set {_uuid} to {_p}'s uuid
+					if {psk::data::%{_uuid}%::nickname} is set:
+						send "§8Nickname:§7 %{psk::data::%{_uuid}%::nickname}%"
+					else:
+						send "§8Nickname:§7 Not set!"
+					if {psk::data::%{_uuid}%::gender} is set:
+						send "§8Gender:§7 %{psk::data::%{_uuid}%::gender}%"
+					else:
+						send "§8Gender:§7 Not set!"
+					if {psk::data::%{_uuid}%::age} is set:
+						send "§8Age:§7 %{psk::data::%{_uuid}%::age}%"
+					else:
+						send "§8Age:§7 Not set!"
+					if {psk::data::%{_uuid}%::country} is set:
+						send "§8Country:§7 %{psk::data::%{_uuid}%::country}%"
+					else:
+						send "§8Country:§7 Not set!"
+					if {psk::data::%{_uuid}%::colour} is set:
+						send "§8Favourite Colour:§7 %{psk::data::%{_uuid}%::colour}%"
+					else:
+						send "§8Favourite Colour:§7 Not set!"
+					if {psk::data::%{_uuid}%::animal} is set:
+						send "§8Favourite Animal:§7 %{psk::data::%{_uuid}%::animal}%"
+					else:
+						send "§8Favourite Animal:§7 Not set!"
+					if {psk::data::%{_uuid}%::sport} is set:
+						send "§8Favourite Sport:§7 %{psk::data::%{_uuid}%::sport}%"
+					else:
+						send "§8Favourite Sport:§7 Not set!"
+				else:
+					execute player command "/profilesk:profilesk view %player%"
+			else:
+				send "§4Error:§c You do not have permission to view profiles."
+		else if arg 1 is "about":
+			send "§8ProfileSk (v3.0.0):§7 ProfileSk is the number one profiling Skript created by LamboCreeper."
+		else:
+			send "§8§nProfileSk Help"
+			send "§e/profile set <category>"
+			send "§e/profile view <player>"
+			send "§e/profile about"
+			send "§7Usage can be found at http://lambocreeper.uk/profilesk"
